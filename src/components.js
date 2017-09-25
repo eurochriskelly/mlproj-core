@@ -726,8 +726,15 @@
             compile('garbage');
 
             const dir  = this.prop('dir');
-            const path = ctxt.platform.resolve(dir);
-            this.walkDir(onMatch, '', dir, path, path, patterns, ctxt, display);
+            const walk = (d) => {
+                const path = ctxt.platform.resolve(d);
+                this.walkDir(onMatch, '', d, path, path, patterns, ctxt, display);
+            }
+            if (Array.isArray(dir)) {
+                dir.forEach(walk);
+            } else {
+                walk(dir);
+            }
         }
 
         walkDir(onMatch, path, dir, full, base, patterns, ctxt, display)
